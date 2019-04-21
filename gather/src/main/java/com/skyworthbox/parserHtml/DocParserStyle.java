@@ -19,7 +19,7 @@ public class DocParserStyle {
 	//-H 'Connection: keep-alive' 
 	//--data 'Param=%E6%A1%88%E4%BB%B6%E7%B1%BB%E5%9E%8B%3A%E6%B0%91%E4%BA%8B%E6%A1%88%E4%BB%B6%2C%E4%B8%80%E7%BA%A7%E6%A1%88%E7%94%B1%3A%E6%B0%91%E4%BA%8B%E6%A1%88%E7%94%B1&Index=1&Page=10&Order=%E6%B3%95%E9%99%A2%E5%B1%82%E7%BA%A7&Direction=asc&vl5x=829e2c87392d0663761bbe21&number=0.51&guid=232f3775-29d4-4e537d8e-e21f317a0a08' 
 	//--compressed	 
-	public void pageReq() {
+	public static void pageReq() {
 		Map<String, String> headers = new HashMap<>();
 		
 		headers.put("Cookie", "_gscu_2116842793=55511477vlo7bn94; _gscbrs_2116842793=1; Hm_lvt_d2caefee2de09b8a6ea438d74fd98db2=1555511477,1555514271; ASP.NET_SessionId=s3vnc4mbellubhgekina1gce; Hm_lpvt_d2caefee2de09b8a6ea438d74fd98db2=1555594554; _gscs_2116842793=t55594553frka2v94|pv:1; wzws_cid=f077db5da62f0830c91b1982f2e28f0797c5ae8f5048248aafa17d8f7054b9f0b4ff46208998c9cdbe7a9e4a4a481083a9d63ea6158f2bef4e20ce594e7a7f36; vjkl5=13627e79495ffad30e601cb183704fcc5a37f29d");
@@ -32,17 +32,21 @@ public class DocParserStyle {
 		headers.put("X-Requested-With", "XMLHttpRequest");
 		headers.put("Connection", "keep-alive");
 		String url = "http://wenshu.court.gov.cn/List/ListContent";
-        CUrl curl = new CUrl(url)
+        String param = "案件类型:民事案件,一级案由:民事案由";
+		String order = "法院层级";
+		CUrl curl = new CUrl(url)
         		.headers(headers)
-        		.data("Param", "案件类型:民事案件,一级案由:民事案由")
-        		.data("Index", "1")
-        		.data("Page", "10")
-        		.data("Order", "法院层级")
-        		.data("Direction", "asc")
-        		.data("vl5x", "a4a2db73f33e698da08b8c9d")
-        		.data("number", "0.51")
-        		.data("guid", "a21357e7-0f6a-ab5b33bc-bd64714d62e4");        		        		
-        curl.exec();
+        		.data("Param=" + param)
+        		.data("Index=1")
+        		.data("Page=10")
+        		.data("Order" + order)
+        		.data("Direction=asc")
+        		.data("vl5x=a4a2db73f33e698da08b8c9d")
+        		.data("number=0.51")
+        		.data("guid=a21357e7-0f6a-ab5b33bc-bd64714d62e4");        		        		
+        String result = curl.exec("UTF-8");
+        
+        System.out.println(result);
     }
 	
 //	POST http://wenshu.court.gov.cn/CreateContentJS/CreateListDocZip.aspx?action=1 HTTP/1.1
@@ -66,5 +70,7 @@ public class DocParserStyle {
 		
 	}
 	
-	
+	public static void main(String[] args) {
+		pageReq();
+	}
 }
