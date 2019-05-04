@@ -2,6 +2,9 @@ package com.skyworthbox.chrome.auto;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -42,20 +45,23 @@ public class DocGather {
 
 	@Test
 	public void testGather() throws Exception {
+		System.out.println("page request start:" + LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE));
 		selenium.windowMaximize();
 		selenium.open("http://wenshu.court.gov.cn/list/list/?sorttype=1&number=0.5191832203422626&guid=8a744b71-75c1-e1158bfd-5c764e544ebd&conditions=searchWord+2+AJLX++%E6%A1%88%E4%BB%B6%E7%B1%BB%E5%9E%8B:%E6%B0%91%E4%BA%8B%E6%A1%88%E4%BB%B6&conditions=searchWord+%E6%B0%91%E4%BA%8B%E6%A1%88%E7%94%B1+++%E4%B8%80%E7%BA%A7%E6%A1%88%E7%94%B1:%E6%B0%91%E4%BA%8B%E6%A1%88%E7%94%B1");
 //		new WebDriverWait(driver, 10).until(ExpectedConditions
 //				.presenceOfElementLocated(By.id("resultList")));
 		selenium.waitForPageToLoad("10000");
-		
-		
+				
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");  //转换时间格式
-		String time = dateFormat.format(Calendar.getInstance().getTime());  //获取当前时间
-		
+		String time = dateFormat.format(Calendar.getInstance().getTime());  //获取当前时间		
 		TakesScreenshot screenshot = (TakesScreenshot)driver;
         File src= screenshot.getScreenshotAs(org.openqa.selenium.OutputType.FILE);
         FileUtils.copyFile(src, new File(DOWNLOAD_FILE_PATH + "/" + time + ".png"));
+        System.out.println("page loaded time:" + LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE));
 		
+        //System.out.println("body text:" + selenium.getBodyText());
+        System.out.println("body text:" + selenium.getHtmlSource());
+        
 		selenium.click("xpath=(.//*[normalize-space(text()) and normalize-space(.)='【裁判理由】'])[1]/following::img[2]");
 		selenium.selectWindow("win_ser_1");
 		selenium.close();
